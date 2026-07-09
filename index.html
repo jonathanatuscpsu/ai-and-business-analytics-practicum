@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI &amp; Business Analytics Practicum | Project Scoping Dashboard</title>
+<style>
+    :root {
+      --gt-gold: #B39051;
+      --gt-dark-gold: #8F713D;
+      --gt-light-gold: #DEBD88;
+      --gt-navy: #051E39;
+      --gt-medium-navy: #003D69;
+      --gt-blue: #004C97;
+      --gt-diploma: #F9F6E5;
+      --gt-buzz: #EAAA00;
+      --gt-teal: #048A81;
+      --ink: #18202A;
+      --muted: #5C6470;
+      --line: #E5E0D5;
+      --paper: #FFFFFF;
+      --soft: #F7F4EA;
+      --shadow: 0 18px 45px rgba(5, 30, 57, 0.12);
+      --shadow-soft: 0 10px 25px rgba(5, 30, 57, 0.08);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Avenir, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #fff 0%, var(--soft) 48%, #fff 100%);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid rgba(179, 144, 81, 0.25);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 800;
+      color: var(--gt-navy);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--gt-navy), var(--gt-medium-navy) 55%, var(--gt-gold));
+      display: grid;
+      place-items: center;
+      color: white;
+      box-shadow: var(--shadow-soft);
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.9rem;
+      color: #334257;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover { color: var(--gt-dark-gold); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: var(--gt-navy);
+      color: white;
+      font-weight: 750;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+      font-size: 0.94rem;
+      font-family: inherit;
+    }
+
+    .btn.gold {
+      color: #111;
+      background: linear-gradient(90deg, var(--gt-dark-gold), var(--gt-gold), var(--gt-light-gold));
+    }
+
+    .btn.ghost {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.30);
+      box-shadow: none;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 560px;
+      color: white;
+      background:
+        radial-gradient(circle at 82% 12%, rgba(234, 170, 0, 0.38), transparent 28%),
+        linear-gradient(135deg, var(--gt-navy) 0%, var(--gt-medium-navy) 45%, #071625 100%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(45deg, rgba(255,255,255,0.08) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%);
+      background-size: 72px 72px;
+      opacity: 0.22;
+      transform: rotate(2deg) scale(1.1);
+    }
+
+    .hero-inner {
+      position: relative;
+      width: min(1640px, calc(100% - 96px));
+      margin: 0 auto;
+      padding: 70px 0 56px;
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(520px, 0.80fr);
+      gap: 42px;
+      align-items: start;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 8px 12px;
+      border: 1px solid rgba(222, 189, 136, 0.45);
+      border-radius: 999px;
+      color: var(--gt-light-gold);
+      background: rgba(255,255,255,0.06);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      font-size: 0.76rem;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 6vw, 5.6rem);
+      line-height: 0.93;
+      margin: 22px 0 22px;
+      letter-spacing: -0.065em;
+      max-width: 780px;
+    }
+
+    .hero p {
+      max-width: 720px;
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.83);
+      margin: 0 0 22px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .hero-card {
+      position: relative;
+      justify-self: end;
+      width: 100%;
+      max-width: 720px;
+      background: rgba(255,255,255,0.94);
+      color: var(--ink);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.7);
+    }
+
+    .hero-card h2 {
+      margin: 0 0 10px;
+      font-size: 1.45rem;
+      color: var(--gt-navy);
+      letter-spacing: -0.025em;
+    }
+
+    .agenda-item {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 16px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .agenda-time {
+      color: var(--gt-dark-gold);
+      font-weight: 900;
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .agenda-item strong { color: var(--gt-navy); }
+
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 76px 24px;
+    }
+
+    .section.tight { padding-top: 46px; }
+
+    .section-title {
+      display: grid;
+      grid-template-columns: 0.82fr 1fr;
+      gap: 34px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      color: var(--gt-navy);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card-grid.one { grid-template-columns: minmax(0, 1fr); }
+    .card-grid.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+    .card {
+      position: relative;
+      background: var(--paper);
+      border: 1px solid rgba(179, 144, 81, 0.25);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--gt-dark-gold), var(--gt-gold), var(--gt-light-gold));
+    }
+
+    .card h3 {
+      margin: 8px 0 12px;
+      color: var(--gt-navy);
+      font-size: 1.18rem;
+      letter-spacing: -0.02em;
+    }
+
+    .card p, .card li { color: #4F5965; }
+
+    .metric {
+      font-size: 2.4rem;
+      line-height: 1;
+      color: var(--gt-navy);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      margin: 6px 0 8px;
+    }
+
+    .label {
+      color: var(--gt-dark-gold);
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .feature-band {
+      background: var(--gt-diploma);
+      border-block: 1px solid rgba(179, 144, 81, 0.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-band::before {
+      content: "";
+      position: absolute;
+      inset: -80px auto auto -80px;
+      width: 310px;
+      height: 310px;
+      border-radius: 50%;
+      background: rgba(179, 144, 81, 0.16);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 0.96fr 1.04fr;
+      gap: 26px;
+      align-items: stretch;
+    }
+
+    .callout {
+      background: linear-gradient(135deg, var(--gt-navy), #0B2848);
+      color: white;
+      border-radius: 28px;
+      padding: 34px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .callout::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -90px;
+      width: 250px;
+      height: 250px;
+      border-radius: 40px;
+      transform: rotate(28deg);
+      background: linear-gradient(135deg, rgba(179,144,81,.52), rgba(222,189,136,.20));
+    }
+
+    .callout h2, .callout h3 { color: white; margin-top: 0; }
+    .callout p { color: rgba(255,255,255,0.82); }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 18px;
+      background: white;
+      border-radius: 16px;
+      border: 1px solid rgba(5, 30, 57, 0.08);
+    }
+
+    .step-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--gt-diploma);
+      color: var(--gt-dark-gold);
+      font-weight: 900;
+      border: 1px solid rgba(179,144,81,.32);
+    }
+
+    .step h4 { margin: 0 0 4px; color: var(--gt-navy); }
+    .step p { margin: 0; color: var(--muted); }
+
+    .time-note {
+      display: inline-flex;
+      margin-left: 8px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--gt-diploma);
+      color: var(--gt-dark-gold);
+      font-size: 0.78rem;
+      font-weight: 900;
+      white-space: nowrap;
+      border: 1px solid rgba(179, 144, 81, 0.28);
+    }
+
+    .milestone-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .milestone-card {
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .milestone-card .big-num {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: var(--gt-navy);
+      color: white;
+      font-weight: 900;
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+    }
+
+    .note-box {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(179,144,81,.26);
+      border-radius: 22px;
+      padding: 22px;
+      margin-top: 22px;
+      color: #465160;
+    }
+
+    .example-note {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: var(--gt-diploma);
+      border: 1px solid rgba(179,144,81,.26);
+      color: #465160;
+      font-size: 0.94rem;
+    }
+
+    .example-note strong { color: var(--gt-navy); }
+
+    .callout .example-note {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(222,189,136,.38);
+      color: rgba(255,255,255,0.86);
+    }
+
+    .callout .example-note strong { color: var(--gt-light-gold); }
+
+    .data-example-card {
+      margin-top: 18px;
+    }
+
+    .data-example-card p {
+      margin-bottom: 0;
+    }
+
+    .data-methods-box {
+      margin-top: 24px;
+      background: #fff;
+      border: 1px solid rgba(179,144,81,.30);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .data-methods-box h3 {
+      margin: 8px 0 10px;
+      color: var(--gt-navy);
+      font-size: 1.35rem;
+      letter-spacing: -0.025em;
+    }
+
+    .data-methods-box p {
+      color: var(--muted);
+      margin: 0 0 12px;
+    }
+
+    .data-method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .data-method {
+      background: var(--gt-diploma);
+      border: 1px solid rgba(179,144,81,.28);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .data-method strong {
+      display: block;
+      color: var(--gt-navy);
+      margin-bottom: 6px;
+    }
+
+    .data-method span {
+      color: #465160;
+      font-size: 0.94rem;
+    }
+
+    .reflection-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .reflection-card {
+      background: var(--gt-diploma);
+      border: 1px solid rgba(179,144,81,.26);
+      border-radius: 16px;
+      padding: 14px 16px;
+      color: #465160;
+      font-size: 0.94rem;
+    }
+
+    .reflection-card strong {
+      display: block;
+      color: var(--gt-navy);
+      margin-bottom: 4px;
+    }
+
+
+    .semester-timeline {
+      margin-top: 28px;
+      background: white;
+      border: 1px solid rgba(179,144,81,.26);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .semester-timeline-header {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 22px;
+      align-items: end;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 14px;
+    }
+
+    .semester-timeline-header h3 {
+      margin: 8px 0 0;
+      color: var(--gt-navy);
+      font-size: 1.55rem;
+      letter-spacing: -0.025em;
+    }
+
+    .semester-timeline-header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .week-row {
+      display: grid;
+      grid-template-columns: 92px 1fr 190px;
+      gap: 16px;
+      align-items: start;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(5,30,57,.08);
+    }
+
+    .week-row:last-child { border-bottom: 0; }
+
+    .week-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      border-radius: 999px;
+      background: var(--gt-diploma);
+      color: var(--gt-dark-gold);
+      font-weight: 900;
+      border: 1px solid rgba(179,144,81,.30);
+      white-space: nowrap;
+    }
+
+    .week-focus h4 {
+      margin: 0 0 4px;
+      color: var(--gt-navy);
+      font-size: 1rem;
+    }
+
+    .week-focus p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .week-touchpoint {
+      justify-self: end;
+      text-align: right;
+    }
+
+    .week-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #F1F5F9;
+      color: #314155;
+      font-weight: 800;
+      font-size: 0.78rem;
+    }
+
+    .week-tag.gold {
+      background: rgba(179,144,81,.16);
+      color: var(--gt-dark-gold);
+      border: 1px solid rgba(179,144,81,.26);
+    }
+
+    .week-tag.navy {
+      background: rgba(5,30,57,.08);
+      color: var(--gt-navy);
+      border: 1px solid rgba(5,30,57,.12);
+    }
+
+
+
+    .direction-tier {
+      margin-top: 28px;
+    }
+
+    .direction-tier:first-of-type {
+      margin-top: 0;
+    }
+
+    .direction-tier-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 0 0 16px;
+    }
+
+    .direction-tier-header h3 {
+      margin: 0;
+      color: var(--gt-navy);
+      font-size: 1.45rem;
+      letter-spacing: -0.025em;
+    }
+
+    .direction-tier-header p {
+      margin: 0;
+      max-width: 620px;
+      color: var(--muted);
+    }
+
+    .priority-card {
+      border: 1px solid rgba(179,144,81,.44);
+      box-shadow: 0 20px 46px rgba(5, 30, 57, 0.14);
+      min-height: 330px;
+    }
+
+    .priority-card::after {
+      height: 7px;
+      background: linear-gradient(90deg, var(--gt-dark-gold), var(--gt-buzz), var(--gt-light-gold));
+    }
+
+    .backup-card {
+      background: rgba(255,255,255,.82);
+      box-shadow: 0 8px 18px rgba(5, 30, 57, 0.06);
+    }
+
+    .backup-card::after {
+      background: linear-gradient(90deg, rgba(5,30,57,.78), rgba(0,76,151,.62));
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #F1F5F9;
+      color: #314155;
+      font-weight: 750;
+      font-size: 0.84rem;
+    }
+
+
+    .outcomes-box {
+      margin: 18px 0 16px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      background: rgba(249,246,229,0.82);
+      border: 1px solid rgba(179,144,81,.30);
+    }
+
+    .outcomes-box h4 {
+      margin: 0 0 10px;
+      color: var(--gt-navy);
+      font-size: 0.98rem;
+      letter-spacing: -0.01em;
+    }
+
+    .outcomes-box ul {
+      margin: 0;
+      padding-left: 19px;
+      color: #4F5965;
+    }
+
+    .outcomes-box li {
+      margin: 7px 0;
+    }
+
+    .outcomes-box li li {
+      margin: 4px 0;
+    }
+
+    .outcomes-box strong {
+      color: var(--gt-navy);
+    }
+
+    .smart-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .smart-card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      border: 1px solid rgba(5,30,57,.08);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .smart-card .letter {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--gt-diploma);
+      color: var(--gt-dark-gold);
+      border: 1px solid rgba(179,144,81,.30);
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .smart-card h3 {
+      margin: 0 0 8px;
+      color: var(--gt-navy);
+      font-size: 1.02rem;
+    }
+
+    .smart-card p { margin: 0; color: var(--muted); font-size: 0.94rem; }
+
+    .question-list {
+      counter-reset: q;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .question-card {
+      background: white;
+      border: 1px solid rgba(5,30,57,.08);
+      border-radius: 18px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .question-card::before {
+      counter-increment: q;
+      content: counter(q);
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--gt-navy);
+      color: white;
+      font-weight: 900;
+    }
+
+    .source-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .source-links a, .source-links div {
+      background: #fff;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(179,144,81,.24);
+      color: var(--gt-navy);
+      font-weight: 750;
+    }
+
+    footer {
+      background: #071625;
+      color: white;
+      padding: 50px 24px;
+      margin-top: 50px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .footer-inner p { color: rgba(255,255,255,.72); margin: 6px 0 0; }
+
+    .print-note {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    @media (max-width: 1080px) {
+      .card-grid.five, .smart-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 920px) {
+      .hero-inner, .section-title, .split, .milestone-grid, .semester-timeline-header, .week-row { grid-template-columns: 1fr; }
+      .week-touchpoint { justify-self: start; text-align: left; }
+      .card-grid, .card-grid.three, .card-grid.two, .card-grid.five, .question-list, .source-links, .smart-grid, .reflection-row, .data-method-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hero { min-height: auto; }
+      .hero-inner { width: min(100% - 40px, 720px); padding-top: 64px; }
+      .hero-card { justify-self: stretch; max-width: none; }
+      h1 { font-size: clamp(2.5rem, 12vw, 4.2rem); }
+      .footer-inner { grid-template-columns: 1fr; }
+      .direction-tier-header { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media print {
+      .topbar, .hero-actions, .btn, footer { display: none !important; }
+      body { background: white; }
+      .hero { color: #000; background: white; min-height: 0; }
+      .hero p, .callout p { color: #222; }
+      .hero-card, .card, .question-card, .smart-card { box-shadow: none; }
+      .callout { background: white; color: #000; border: 1px solid #ccc; }
+      .callout h2, .callout h3 { color: #000; }
+      .section { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+<header class="topbar">
+<nav aria-label="Dashboard navigation" class="nav">
+<a class="brand-lockup" href="#top">
+<span class="brand-mark">AI</span>
+<span>Scheller Center for AI in Business</span>
+</a>
+<div class="nav-links">
+<a href="#overview">Overview</a>
+<a href="#directions">IHG Directions</a>
+<a href="#data">Data Readiness</a><a href="#timeline">Timeline</a>
+<a href="#questions">Discussion</a>
+</div>
+</nav>
+</header>
+<main id="top">
+<section class="hero">
+<div class="hero-inner">
+<div>
+<div class="eyebrow">IHG project scoping dashboard · Fall 2026</div>
+<h1>AI &amp; Business Analytics Practicum</h1>
+<p>A working project-scoping dashboard for IHG Hotels &amp; Resorts that translates our discussion into recommended Practicum directions, data-readiness options, <strong>SMART</strong> scoping principles, sponsor engagement expectations, and final handoff deliverables. The goal is to gather IHG feedback and refine a feasible, high-value project scope before launch.</p>
+<div class="hero-actions">
+<a class="btn gold" href="https://www.youtube.com/watch?v=akRFVbYWTVU&amp;t=41s" rel="noopener" target="_blank">Watch 1.5-minute overview</a>
+<button class="btn ghost" onclick="window.print()">Print or save as PDF</button>
+</div>
+</div>
+<aside aria-label="Meeting takeaways" class="hero-card">
+<h2>From discussion to scope</h2><div class="agenda-item"><div class="agenda-time">Purpose</div><div><strong>Working scoping template</strong><br/>Use this dashboard to align on IHG priorities, confirm the preferred project direction, and define a feasible 15-week deliverable.</div></div><div class="agenda-item"><div class="agenda-time">Priority</div><div><strong>Recommended order</strong><br/>Lead with the two IHG-facing options: AI-enabled visual discovery and location intelligence, followed by financial performance and investment prioritization.</div></div>
+<div class="agenda-item">
+<div class="agenda-time">Need</div>
+<div><strong>Data readiness</strong><br/>The strongest use cases depend on usable data. Projects can be scoped with real-world, anonymized, synthetic, aggregated, or non-sensitive data based on IHG’s confidentiality boundaries.</div>
+</div>
+<div class="agenda-item">
+<div class="agenda-time">Fit</div>
+<div><strong>15-week Practicum scope</strong><br/>Strong projects are specific, measurable, achievable, relevant, and time-bound, with clear checkpoints for sponsor feedback.</div>
+</div>
+<div class="agenda-item"><div class="agenda-time">Lead</div><div><strong>Practicum execution lead</strong><br/>Jonathan Fan will lead Practicum execution, coordinate student-team progress, and manage sponsor feedback throughout the semester.</div></div></aside>
+</div>
+</section>
+<section class="section" id="overview">
+<div class="section-title">
+<h2>What the Practicum is</h2>
+<p>
+          A semester-long, company-sponsored course in which student teams translate real business challenges into practical analytics, AI-enabled prototypes, executive dashboards, and implementation recommendations.
+        </p>
+</div>
+<div class="card-grid">
+<div class="card">
+<span class="label">Duration</span>
+<div class="metric">15</div>
+<h3>Weeks</h3>
+<p>A structured timeline to frame the problem, analyze available data, prototype a solution, validate assumptions, and deliver a bounded implementation guide.</p>
+</div>
+<div class="card">
+<span class="label">Team model</span>
+<div class="metric">3-5</div>
+<h3>Students per team</h3>
+<p>Small teams can move quickly, divide responsibilities clearly, and iterate based on sponsor input.</p>
+</div>
+<div class="card">
+<span class="label">Delivery logic</span>
+<div class="metric">3</div>
+<h3>Project phases</h3>
+<p>Frame the business problem, prepare and analyze the data, then deliver actionable recommendations and handoff materials.</p>
+</div>
+<div class="card">
+<span class="label">Goal</span>
+<div class="metric">1-2</div>
+<h3>Practicum-ready scopes</h3>
+<p>The next step is to translate IHG priorities into one or two focused, sponsor-ready project scopes.</p>
+</div>
+</div>
+</section>
+<section class="feature-band" id="directions">
+<div class="section">
+<div class="section-title">
+<h2>Recommended Practicum directions for IHG</h2>
+<p>The first two directions are recommended starting points because they combine visible business value, executive relevance, measurable outcomes, and a clear path to a 15-week student deliverable. The final scope should be refined with IHG feedback before the project is finalized.</p>
+</div>
+<div class="direction-tier">
+<div class="direction-tier-header">
+<h3>Recommended top choices</h3>
+</div>
+<div class="card-grid two">
+<div class="card priority-card">
+<span class="label">Direction 01 · Recommended top choice</span>
+<h3>AI-Enabled Visual Discovery and Location Intelligence</h3>
+<p>Assess how AI-enabled visual and location analytics could improve property image quality review, room and amenity tagging, interior and exterior visualization, customer-facing 2D/3D discovery, heatmap analysis, and market-location insight generation.</p>
+<p>The student team could build a visual intelligence workflow or dashboard that improves property-content quality, supports guest discovery, and shows how image, spatial, and location signals can inform hotel search, merchandising, and decision-making.</p>
+<div class="badge-row">
+<span class="badge">Top choice</span>
+<span class="badge">Computer vision</span>
+<span class="badge">Guest experience</span>
+<span class="badge">Heatmap analysis</span>
+<span class="badge">Location analysis</span>
+</div>
+</div>
+<div class="card priority-card">
+<span class="label">Direction 02 · Recommended top choice</span>
+<h3>Financial Performance and Investment Prioritization</h3>
+<p>Assess how financial analytics could help IHG compare revenue performance, cost efficiency, profitability, budget variance, and return on investment across properties, markets, or segments.</p>
+<p>The student team could build a property- or market-level dashboard that combines revenue, cost, occupancy, booking-channel, loyalty, and location indicators to identify margin opportunities, explain variance drivers, and prioritize targeted operational improvement or AI-enabled investment.</p>
+<div class="badge-row">
+<span class="badge">Top choice</span>
+<span class="badge">Revenue analytics</span>
+<span class="badge">Cost efficiency</span>
+<span class="badge">Profitability</span>
+<span class="badge">Variance analysis</span>
+<span class="badge">Investment prioritization</span>
+</div>
+</div>
+</div>
+<div class="outcomes-box">
+<h4>Expected IHG deliverables and handoff package</h4>
+<p>For either recommended direction, the student team would deliver a sponsor-ready package that IHG can review internally and use to inform follow-on implementation.</p>
+<ul>
+<li><strong>Executive summary dashboard:</strong> A concise HTML-based dashboard for leadership review, focused on the selected direction and the most important business implications.</li>
+<li><strong>Technical report:</strong> A concise report covering data sources, methods, assumptions, findings, limitations, and implementation considerations.</li>
+<li><strong>Reproducible materials:</strong> Code, scripts, notebooks, the final HTML dashboard, and supporting dataset(s) needed to reproduce or adapt the analysis. Suggested submission formats include .R, .Rmd, .py, .ipynb, or shareable Google Colab links.</li>
+</ul>
+</div>
+</div>
+<div class="note-box"><strong>Scoping principle:</strong> Each direction can be framed as a discovery, prototype, evaluation, or implementation-roadmap project. The final scope should be narrow enough for students to define success metrics, work with available data, test assumptions, and deliver actionable recommendations within the 15-week semester.</div>
+<div class="direction-tier">
+<div class="direction-tier-header">
+<h3>Backup option</h3>
+</div>
+<div class="card-grid one">
+<div class="card backup-card">
+<span class="label">Direction 03 · Backup option</span>
+<h3>Internal AI Workflow Efficiency</h3>
+<p>Assess where internal AI-enabled workflows create avoidable manual effort, cost, or delays, then recommend practical improvements to process design, quality review, and governance.</p>
+<p><strong>Enterprise context:</strong> This is an important enterprise topic. Technology firms, AI labs, and large enterprises, including Fortune 500 companies, are investing in governance, evaluation, cost controls, and performance monitoring as their use of generative AI scales.</p>
+<div class="example-note"><strong>Why this remains a backup option:</strong> A strong project would require access to internal usage data, workflow logs, cost assumptions, and governance context. Without those inputs, the work may become too general and less connected to IHG’s customer experience, property performance, or investment priorities.</div>
+<div class="example-note"><strong>Recommended position:</strong> Treat this as a Phase 2 option once IHG identifies a specific internal workflow and determines what information can be safely shared.</div>
+<div class="badge-row">
+<span class="badge">Backup option</span>
+<span class="badge">Internal workflow</span>
+<span class="badge">Cost governance</span>
+<span class="badge">Quality review</span>
+<span class="badge">Phase 2 option</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="data">
+<div class="section-title">
+<h2>Data readiness and sensitivity options</h2>
+<p>
+          High-quality data is essential for meaningful and reliable results. The project can be designed around the safest feasible data option for the selected use case and IHG’s confidentiality requirements.
+        </p>
+</div>
+<div class="split">
+<div class="callout">
+<span class="label" style="color:var(--gt-light-gold);">Data principle</span>
+<h2>Useful output depends on usable data</h2>
+<p>
+            Some Practicum use cases may require real-world operational, content, workflow, financial, image, or location data. Others can be scoped around synthetic, anonymized, aggregated, or otherwise non-sensitive data when the objective is process design, proof-of-concept development, or feasibility assessment.
+          </p>
+</div>
+<div class="card-grid two">
+<div class="card">
+<span class="label">Option A</span>
+<h3>Real-world data</h3>
+<p>Best when operational accuracy, realistic validation, or property- and market-level decision support is central. This option requires clear data-use boundaries, access controls, and sponsor review.</p>
+</div>
+<div class="card">
+<span class="label">Option B</span>
+<h3>Synthetic or anonymized data</h3>
+<p>Best for sensitive workflows, early prototyping, and proof-of-concept design when real data cannot be shared directly. This option supports method design while limiting exposure of confidential information.</p>
+</div>
+<div class="card">
+<span class="label">Option C</span>
+<h3>Non-sensitive content</h3>
+<p>Best for projects that can use approved public, aggregated, or low-risk content, such as sample documents, image examples, policy materials, or summary-level data. This option helps teams prototype responsibly while reducing privacy and confidentiality concerns.</p>
+</div>
+<div class="card">
+<span class="label">Option D</span>
+<h3>Hybrid approach</h3>
+<p>Best for early-stage or sensitive use cases where design can begin before real data access is finalized. This option starts with synthetic or anonymized data, then uses sponsor feedback to define what real data would be needed for implementation.</p>
+</div>
+</div>
+<div class="card data-example-card">
+<span class="label">Past sponsor example</span>
+<h3>The Home Depot Practicum Project</h3>
+<p>
+A Practicum project with The Home Depot used a hybrid approach: synthetic or anonymized data supported early workflow design, while sponsor feedback helped clarify what real operational data would be needed for implementation.
+</p>
+<div class="reflection-row">
+<div class="reflection-card"><strong>Student reflection</strong>“Scope faster by testing the workflow structure first, then using sponsor feedback to refine what data and business context matter most.”</div>
+<div class="reflection-card"><strong>The Home Depot lead reflection</strong>“A fast prototype made the idea concrete and helped clarify which operational data would be most useful for implementation.”</div>
+</div>
+<div class="badge-row">
+<span class="badge">Hybrid approach</span>
+<span class="badge">Sensitive workflows</span>
+<span class="badge">Early prototyping</span>
+<span class="badge">Proof-of-concept design</span>
+<span class="badge">Implementation planning</span>
+</div>
+</div>
+</div>
+
+<div class="data-methods-box">
+<span class="label">Synthetic and anonymized data use</span>
+<h3>How synthetic or anonymized data can support the Practicum</h3>
+<p>
+When real IHG data cannot be shared directly, the student team can still make meaningful progress using sponsor-approved synthetic, anonymized, aggregated, or low-risk data. The goal is not to recreate confidential records, but to preserve enough structure, relationships, and business logic to test the dashboard, workflow, and recommendation framework responsibly.
+</p>
+<div class="data-method-grid">
+<div class="data-method"><strong>1. Schema-based synthetic data</strong><span>IHG can use a field list, variable definitions, example categories, value ranges, and expected business logic to generate mock records that follow the same structure without exposing real property, guest, employee, or financial records.</span></div>
+<div class="data-method"><strong>2. Anonymized or de-identified extracts</strong><span>IHG can remove or mask direct identifiers, such as property names, guest IDs, employee names, exact locations, and transaction-level details. Students can then work with de-identified records or summary-level tables to analyze patterns safely.</span></div>
+<div class="data-method"><strong>3. Aggregation and generalization</strong><span>Sensitive fields can be grouped into broader categories, such as market tiers, region-level geographies, date ranges, occupancy bands, or indexed financial metrics. This protects sensitive values while still supporting trend analysis, segmentation, and dashboard design.</span></div>
+<div class="data-method"><strong>4. Perturbed or normalized values</strong><span>Numerical fields can be scaled, indexed, binned, or lightly perturbed so that students can evaluate relationships and workflows without seeing exact revenue, cost, occupancy, or performance values.</span></div>
+<div class="data-method"><strong>5. Public or approved sample data</strong><span>For early prototyping, the team can combine public hospitality, geospatial, market, or image examples with sponsor-approved assumptions. This approach is useful for testing the interface, visualizations, and analytical flow before access to real data is finalized.</span></div>
+<div class="data-method"><strong>6. Hybrid validation workflow</strong><span>Students can build the prototype using synthetic or anonymized data, while IHG validates selected logic internally against real data and shares high-level feedback. This keeps the Practicum feasible while reducing confidentiality risk.</span></div>
+</div>
+<p style="margin-top: 16px;">
+<strong>Recommended use:</strong> Start with synthetic or anonymized data for early milestones, then use IHG feedback to refine the dashboard, technical report, reproducibility materials, and implementation roadmap. If real data cannot be shared, the final handoff can still include code, notebooks, dashboard files, and run instructions that IHG can execute internally with approved data.
+</p>
+<div class="badge-row">
+<span class="badge">Synthetic data</span>
+<span class="badge">Anonymized extracts</span>
+<span class="badge">Aggregated metrics</span>
+<span class="badge">De-identified workflow</span>
+<span class="badge">Sponsor validation</span>
+</div>
+</div>
+</section>
+<section class="feature-band">
+<div class="section">
+<div class="section-title">
+<h2>What makes a strong 15-week Practicum project</h2>
+<p>
+            Given the semester timeline, the strongest Practicum projects are not open-ended research questions. They are <strong>SMART</strong> business problems with clear boundaries, visible value, measurable outputs, and a realistic handoff path.
+          </p>
+</div>
+<div class="smart-grid">
+<div class="smart-card"><div class="letter">S</div><h3>Specific</h3><p>Define the exact workflow, decision, user group, or customer experience the project will improve.</p></div>
+<div class="smart-card"><div class="letter">M</div><h3>Measurable</h3><p>Identify success metrics such as cost, time, accuracy, quality, usability, executive relevance, or adoption readiness.</p></div>
+<div class="smart-card"><div class="letter">A</div><h3>Achievable</h3><p>Match project ambition to available data, student skills, sponsor access, and the 15-week course timeline.</p></div>
+<div class="smart-card"><div class="letter">R</div><h3>Relevant</h3><p>Connect the project directly to IHG’s business priorities, AI strategy, or customer experience goals.</p></div>
+<div class="smart-card"><div class="letter">T</div><h3>Time-bound</h3><p>Define what can be delivered by each milestone and what should remain for a future implementation phase.</p></div>
+</div>
+</div>
+</section>
+<section class="section" id="timeline"><div class="section-title"><h2>15-week semester timeline</h2><p>The semester moves from sponsor context and problem framing to data preparation, exploratory analysis, prototype development, validation, recommendations, and final handoff.</p></div><div aria-label="15-week Practicum timeline" class="semester-timeline">
+<div class="semester-timeline-header">
+<div>
+<span class="label">15-week timeline</span>
+<h3>From sponsor challenge to final handoff</h3>
+</div>
+<p>
+            The semester is organized as a staged delivery process. Students begin with business framing, move into data preparation and analysis, and finish with a sponsor-ready workflow, recommendations, and implementation guidance.
+          </p>
+</div>
+<div class="week-row">
+<div class="week-label">Week 1</div>
+<div class="week-focus"><h4>Project kickoff and sponsor context</h4><p>Introduce the IHG challenge, business context, available data options, constraints, and desired final deliverables.</p></div>
+<div class="week-touchpoint"><span class="week-tag gold">Sponsor kickoff</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 2</div>
+<div class="week-focus"><h4>Discovery and scope refinement</h4><p>Clarify users, decisions, workflows, data access, privacy boundaries, and the practical definition of success.</p></div>
+<div class="week-touchpoint"><span class="week-tag">Scoping</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 3</div>
+<div class="week-focus"><h4>Problem charter and success metrics</h4><p>Draft the problem statement, objectives, assumptions, constraints, analytical plan, and measurable success criteria.</p></div>
+<div class="week-touchpoint"><span class="week-tag">Charter draft</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 4</div>
+<div class="week-focus"><h4>Milestone 1: Problem Framing</h4><p>Confirm the business problem, scope, constraints, assumptions, deliverables, and sponsor feedback.</p></div>
+<div class="week-touchpoint"><span class="week-tag navy">Milestone 1</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 5</div>
+<div class="week-focus"><h4>Data audit and readiness review</h4><p>Assess data quality, documentation, missingness, sensitivity, synthetic data options, and what can be used safely.</p></div>
+<div class="week-touchpoint"><span class="week-tag">Data audit</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 6</div>
+<div class="week-focus"><h4>Data preparation and cleaning</h4><p>Prepare analysis-ready datasets, define features or tags, resolve quality issues, and document transformation steps.</p></div>
+<div class="week-touchpoint"><span class="week-tag">Data prep</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 7</div>
+<div class="week-focus"><h4>Exploratory analysis and early patterns</h4><p>Develop initial summaries, visualizations, segmentation views, heatmap analysis, model baselines, or workflow diagnostics.</p></div>
+<div class="week-touchpoint"><span class="week-tag">EDA</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 8</div>
+<div class="week-focus"><h4>Early prototype structure</h4><p>Translate early findings into a dashboard, analytical workflow, AI prototype, or decision-support structure.</p></div>
+<div class="week-touchpoint"><span class="week-tag">Prototype draft</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 9</div>
+<div class="week-focus"><h4>Milestone 2: From Framing to Analysis</h4><p>Present early insights, data issues, analytical direction, and sponsor feedback needed before deeper development.</p></div>
+<div class="week-touchpoint"><span class="week-tag navy">Milestone 2</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 10</div>
+<div class="week-focus"><h4>Deeper analysis and iteration</h4><p>Refine models, dashboards, spatial analysis, financial drivers, or AI workflow components based on feedback.</p></div>
+<div class="week-touchpoint"><span class="week-tag">Build</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 11</div>
+<div class="week-focus"><h4>Validation and stress testing</h4><p>Test assumptions, compare segments, validate outputs, check robustness, and document limitations.</p></div>
+<div class="week-touchpoint"><span class="week-tag">Validation</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 12</div>
+<div class="week-focus"><h4>Recommendations and implementation logic</h4><p>Translate analysis into business implications, prioritized actions, operational considerations, and responsible AI guardrails.</p></div>
+<div class="week-touchpoint"><span class="week-tag">Recommendations</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 13</div>
+<div class="week-focus"><h4>Final prototype and documentation</h4><p>Finalize the dashboard, workflow, model outputs, technical notes, user guide, and executive narrative.</p></div>
+<div class="week-touchpoint"><span class="week-tag">Final build</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 14</div>
+<div class="week-focus"><h4>Milestone 3 preparation</h4><p>Rehearse the final presentation, refine the implementation guide, and prepare sponsor-ready recommendations.</p></div>
+<div class="week-touchpoint"><span class="week-tag navy">Delivery prep</span></div>
+</div>
+<div class="week-row">
+<div class="week-label">Week 15</div>
+<div class="week-focus"><h4>Final sponsor presentation and handoff</h4><p>Deliver the final analytics workflow, insights, recommendations, limitations, and next-step implementation roadmap.</p></div>
+<div class="week-touchpoint"><span class="week-tag gold">Final handoff</span></div>
+</div>
+</div></section><section class="section">
+<div class="section-title">
+<h2>Sponsor engagement model</h2>
+<p>Strong Practicum projects benefit from steady, lightweight sponsor engagement. Jonathan Fan will lead Practicum execution and student-team coordination, while IHG provides context, answers focused questions, clarifies data or business assumptions, and offers timely feedback at key milestones.</p>
+</div>
+<div class="note-box">
+<strong>Projected IHG leadership and project-team time commitment: approximately 13–21 hours per assigned student team across the semester.</strong><br/>
+This estimate includes a 1-hour kickoff, weekly 30–60 minute check-ins, two 1-hour milestone feedback sessions, and a 2–3 hour final evaluation. The cadence can be adjusted based on the number of teams, data complexity, and the level of feedback IHG would like to provide between milestones.
+<br/>
+<strong>Practicum execution lead: </strong>Jonathan Fan will oversee Practicum execution, coordinate student-team progress, and manage sponsor feedback throughout the semester.</div>
+<div class="timeline" style="margin-top: 18px;">
+<div class="step"><div class="step-num">1</div><div><h4>Kickoff: present the challenge <span class="time-note">1 hour</span></h4><p>Share the business context, project priorities, constraints, available data options, and what a useful final deliverable should accomplish.</p></div></div>
+<div class="step"><div class="step-num">2</div><div><h4>Weekly check-in with the assigned student team <span class="time-note">30 minutes–1 hour</span></h4><p>Meet briefly with the student team to answer questions, clarify data or business context, and keep the work aligned with IHG priorities.</p></div></div>
+<div class="step"><div class="step-num">3</div><div><h4>Milestone 1 feedback <span class="time-note">1 hour</span></h4><p>Confirm the problem framing, success metrics, assumptions, and project boundaries before the team moves into deeper analysis.</p></div></div>
+<div class="step"><div class="step-num">4</div><div><h4>Milestone 2 feedback <span class="time-note">1 hour</span></h4><p>Review early findings, validate assumptions, clarify data issues, and adjust scope before the team invests heavily in the final build.</p></div></div>
+<div class="step"><div class="step-num">5</div><div><h4>Final evaluation <span class="time-note">2–3 hours</span></h4><p>Review the final recommendations, prototype value, implementation feasibility, limitations, and next-step opportunities.</p></div></div>
+</div>
+</section>
+<section class="feature-band" id="track-record">
+<div class="section">
+<div class="section-title">
+<h2>Track record and sponsor value</h2>
+<p>
+            <strong>The Practicum has supported applied analytics projects across sectors, giving sponsors a disciplined way to clarify data readiness, prototype practical solutions, and translate analysis into executive-ready recommendations.</strong>
+          </p>
+</div>
+<div class="split">
+<div class="callout">
+<span class="label" style="color:var(--gt-light-gold);">Featured example</span>
+<h2>Comfama, Colombia</h2>
+<p>
+              In Fall 2024 and Spring 2025, student teams worked with Comfama on retention, personalization, and forecasting projects. The collaboration was featured in OR/MS Today as an example of analytics for social impact.
+            </p>
+<a class="btn gold" href="https://pubsonline.informs.org/do/10.1287/orms.2025.03.11/full/" rel="noopener" target="_blank">Read the feature</a>
+</div>
+<div class="card-grid two">
+<div class="card">
+<span class="label">Past sponsors</span>
+<h3>Retail, logistics, energy, sports, and services</h3>
+<p>The Home Depot, Sparck Technologies, Augusta National, Cherry Street Energy, and other partners have brought a wide range of applied business challenges.</p>
+</div>
+<div class="card">
+<span class="label">What students do</span>
+<h3>From messy question to decision-ready output</h3>
+<p>Students structure data, build dashboards or proof-of-concept workflows, and clarify what would be needed to move from prototype to implementation.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="feature-band" id="questions">
+<div class="section">
+<div class="section-title">
+<h2>Discussion guide for IHG</h2>
+<p>These questions are designed to gather IHG feedback, confirm the preferred project direction, and translate the discussion into a focused scope that fits the course timeline and data boundaries.</p>
+</div>
+<div class="question-list">
+<div class="question-card"><div>Which recommended direction should IHG prioritize first, and what feedback would help refine that direction before the scope is finalized?</div></div>
+<div class="question-card"><div>What specific workflow, decision, or customer experience should the student team focus on?</div></div>
+<div class="question-card"><div>What data could be safely shared: real-world, anonymized, synthetic, aggregated, or non-sensitive sample data?</div></div>
+<div class="question-card"><div>What would count as a successful 15-week output: an executive dashboard, workflow prototype, evaluation framework, technical report, implementation guide, or reproducible handoff package?</div></div>
+<div class="question-card"><div>Who will serve as IHG’s main point of contact for the Practicum?</div></div>
+<div class="question-card"><div>What should be explicitly out of scope so the project remains achievable by the final presentation?</div></div>
+</div>
+</div>
+</section>
+</main>
+<footer>
+<div class="footer-inner">
+<div>
+<strong>AI &amp; Business Analytics Practicum</strong>
+<p>Zhaohu (Jonathan) Fan, Ph.D.</p>
+<p>Associate Faculty Director, Center for AI in Business</p>
+<p>Georgia Institute of Technology | Scheller College of Business</p>
+<p>800 West Peachtree Street NW | Office 4144 | Atlanta, GA 30308</p>
+<p>Email: <a href="mailto:jonathan.fan@scheller.gatech.edu">jonathan.fan@scheller.gatech.edu</a></p>
+<p><a href="https://www.scheller.gatech.edu/directory/faculty/fan/" rel="noopener" target="_blank">https://www.scheller.gatech.edu/directory/faculty/fan/</a></p>
+</div>
+<a class="btn gold" href="mailto:jonathan.fan@scheller.gatech.edu">Contact Jonathan</a>
+</div>
+</footer>
+</body>
+</html>
